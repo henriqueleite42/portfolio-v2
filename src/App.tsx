@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-function App() {
+import routes from './config/routes'
+
+const loadRoute = (viewName: string) =>
+  React.lazy(() => import(`./Views/${viewName}`))
+
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Switch>
+        {routes.map((route, index) => (
+          <Route
+            key={index}
+            exact
+            path={route.path}
+            component={loadRoute(route.component)}
+          />
+        ))}
+      </Switch>
+    </Router>
+  )
 }
 
-export default App;
+export default App
